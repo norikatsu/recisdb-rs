@@ -1,0 +1,9 @@
+prefix=/usr/local
+libdir=/usr/local/lib
+includedir=/usr/include
+Name: libsobacas
+Description: PCSC Lite compatible ECM decoding library
+Version: 0.0.0
+Libs: -L${libdir} -lsobacas
+Cflags: -I${includedir}/PCSC
+
