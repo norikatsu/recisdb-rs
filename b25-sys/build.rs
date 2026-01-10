@@ -90,6 +90,20 @@ fn main() {
         "features `crate/prioritized_card_reader` and `crate/block**cbc` are mutually exclusive"
     );
 
+    // リポジトリの pkgconfig ディレクトリを検索パスに追加
+    if let Ok(manifest_dir) = std::env::var("CARGO_MANIFEST_DIR") {
+        let repo_root = std::path::PathBuf::from(&manifest_dir).parent().unwrap().to_path_buf();
+        let pkgconfig_dir = repo_root.join("pkgconfig");
+        if pkgconfig_dir.exists() {
+            if let Ok(current_path) = std::env::var("PKG_CONFIG_PATH") {
+                std::env::set_var("PKG_CONFIG_PATH", format!("{}:{}", pkgconfig_dir.display(), current_path));
+            } else {
+                std::env::set_var("PKG_CONFIG_PATH", pkgconfig_dir.display().to_string());
+            }
+        }
+    }
+
+
     let mut pc = pkg_config::Config::new();
     pc.statik(false);
     if cx.win {
